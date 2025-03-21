@@ -1,11 +1,11 @@
 import mongoose from "mongoose";
-import { compareToHash } from "../utils/crypto";
+import { compareToHash } from "../utils/crypto.js";
 
 const userSchema = new mongoose.Schema({
     username: {
         type: String,
         required: true,
-        unique
+        unique: true
     },
     email: {
         type: String,

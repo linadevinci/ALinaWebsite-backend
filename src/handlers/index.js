@@ -1,11 +1,11 @@
-import userModel from "../user/user-model";
-import { getHashFromClearText } from "../utils/crypto";
+import userModel from "../user/user-model.js";
+import { getHashFromClearText } from "../utils/crypto.js";
 
 export default function addRouteHandlers(app) {
     app.get("/", async (requestAnimationFrame, reply) => {
-        return { hemmp: "world" };
+        return { hello: "world" };
     });
-    app.post("/signup", async(requestAnimationFrame, reply) =>{
+    app.post("/api/users", async(requestAnimationFrame, reply) =>{
         const{email, password, username} = request.body;
         const user = new userModel({
             email, 
