@@ -1,34 +1,36 @@
 import userModel from "../user/user-model.js";
-import Quote from "../quote/quote-model.js"; // 👈 IMPORT ICI
+import Quote from "../quote/quote-model.js";
 import { getHashFromClearText } from "../utils/crypto.js";
 
 export default function addRouteHandlers(app) {
-  // Test route
-  app.get("/", async (request, reply) => {
-    return { hello: "world" };
-  });
+  // ... autres routes
 
-  // Création utilisateur
-  app.post("/api/users", async (request, reply) => {
-    const { email, password, username } = request.body;
-    const user = new userModel({
-      email,
-      password: getHashFromClearText(password),
-      username
-    });
-    await user.save();
-    return user.toJSON();
-  });
+  app.post("/api/token", async (request, reply) => {
+    const { username, password } = request.body;
 
-  // ➕ ROUTE À AJOUTER ABSOLUMENT
-  app.get("/quote", async (request, reply) => {
-    try {
-      const count = await Quote.countDocuments();
-      const random = Math.floor(Math.random() * count);
-      const quote = await Quote.findOne().skip(random);
-      return quote;
-    } catch (err) {
-      reply.status(500).send({ error: "Erreur serveur", details: err.message });
+    if (!username || !password) {
+      return reply.status(400).send({ error: "Champs requis manquants." });
     }
+
+    const user = await userModel.findOne({ username });
+
+    if (!user) {
+      return reply.status(401).send({ error: "Utilisateur introuvable." });
+    }
+
+    const hashed = getHashFromClearText(password);
+
+    if (user.password !== hashed) {
+      return reply.status(401).send({ error: "Mot de passe incorrect." });
+    }
+
+    const count = await Quote.countDocuments();
+    const random = Math.floor(Math.random() * count);
+    const quote = await Quote.findOne().skip(random);
+
+    return reply.send({
+      message: `Bonjour ${user.username} !`,
+      quote
+    });
   });
 }
