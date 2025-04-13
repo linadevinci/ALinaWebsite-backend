@@ -16,16 +16,17 @@ await app.register(cors, {});
 // });
 
 // Nouvelle route /quote
-app.get("/quote", async (request, reply) => {
-  try {
-    const count = await Quote.countDocuments();
-    const random = Math.floor(Math.random() * count);
-    const quote = await Quote.findOne().skip(random);
-    reply.send(quote);
-  } catch (err) {
-    reply.status(500).send({ error: "Erreur serveur", details: err.message });
-  }
-});
+
+// app.get("/quote", async (request, reply) => {
+//   try {
+//     const count = await Quote.countDocuments();
+//     const random = Math.floor(Math.random() * count);
+//     const quote = await Quote.findOne().skip(random);
+//     reply.send(quote);
+//   } catch (err) {
+//     reply.status(500).send({ error: "Erreur serveur", details: err.message });
+//   }
+// });
 
 addRouteHandlers(app);
 
