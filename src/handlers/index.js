@@ -1,9 +1,9 @@
 import userModel from "../user/user-model.js";
-import Quote from "../quote/quote-model.js";
+import Quote from "../quote/quote-model.js"; // 👈 IMPORT ICI
 import { getHashFromClearText } from "../utils/crypto.js";
 
 export default function addRouteHandlers(app) {
-  // Route de test
+  // Test route
   app.get("/", async (request, reply) => {
     return { hello: "world" };
   });
@@ -20,7 +20,7 @@ export default function addRouteHandlers(app) {
     return user.toJSON();
   });
 
-  // ➕ Nouvelle route pour récupérer une citation aléatoire
+  // ➕ ROUTE À AJOUTER ABSOLUMENT
   app.get("/quote", async (request, reply) => {
     try {
       const count = await Quote.countDocuments();
