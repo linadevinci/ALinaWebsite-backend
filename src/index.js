@@ -10,10 +10,10 @@ const app = fastify({ logger: true });
 
 await app.register(cors, {});
 
-// Test route
-app.get("/", async (request, reply) => {
-  reply.send({ hello: "world" });
-});
+// // Test route
+// app.get("/", async (request, reply) => {
+//   reply.send({ hello: "world" });
+// });
 
 // Nouvelle route /quote
 app.get("/quote", async (request, reply) => {
