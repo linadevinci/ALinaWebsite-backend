@@ -2,7 +2,11 @@ import userModel from "../user/user-model.js";
 import Quote from "../quote/quote-model.js";
 import { getHashFromClearText } from "../utils/crypto.js";
 
+console.log("🧠 Route handlers enregistrés !");
+
 export default function addRouteHandlers(app) {
+
+  console.log("✅ Handlers enregistrés");
   // POST /api/token → Authentifie et renvoie une citation
   app.post("/api/token", async (request, reply) => {
     const { username, password } = request.body;
@@ -35,6 +39,7 @@ export default function addRouteHandlers(app) {
 
   // ✅ GET /api/quote → Renvoie une citation aléatoire
   app.get("/api/quote", async (request, reply) => {
+    console.log("📥 Requête GET /api/quote reçue");
     try {
       const count = await Quote.countDocuments();
       const random = Math.floor(Math.random() * count);
