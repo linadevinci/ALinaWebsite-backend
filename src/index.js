@@ -13,7 +13,8 @@ const app = fastify({ logger: true });
 await app.register(cors, {});
 
 // Ajouter toutes les routes définies dans /handlers/index.js
-addRouteHandlers(app);
+//addRouteHandlers(app);
+await addRouteHandlers(app);
 
 try {
   // Connexion à MongoDB
