@@ -3,8 +3,7 @@ import Quote from "../quote/quote-model.js";
 import { getHashFromClearText } from "../utils/crypto.js";
 
 export default function addRouteHandlers(app) {
-  // ... autres routes
-
+  // POST /api/token → Authentifie et renvoie une citation
   app.post("/api/token", async (request, reply) => {
     const { username, password } = request.body;
 
@@ -32,5 +31,23 @@ export default function addRouteHandlers(app) {
       message: `Bonjour ${user.username} !`,
       quote
     });
+  });
+
+  // ✅ GET /api/quote → Renvoie une citation aléatoire
+  app.get("/api/quote", async (request, reply) => {
+    try {
+      const count = await Quote.countDocuments();
+      const random = Math.floor(Math.random() * count);
+      const quote = await Quote.findOne().skip(random);
+
+      if (!quote) {
+        return reply.status(404).send({ error: "Aucune citation trouvée." });
+      }
+
+      return reply.send(quote);
+    } catch (err) {
+      console.error(err);
+      return reply.status(500).send({ error: "Erreur serveur lors de la récupération de la citation." });
+    }
   });
 }
