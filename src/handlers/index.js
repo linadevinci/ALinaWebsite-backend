@@ -52,4 +52,8 @@ export default async function addRouteHandlers(app) {
       return reply.status(500).send({ error: "Erreur serveur" });
     }
   });
+
+  app.get("/", async (request, reply) => {
+    return reply.send({ message: "Welcome to the Quotes API! Use /api/quote to get a random quote." });
+  });
 }
