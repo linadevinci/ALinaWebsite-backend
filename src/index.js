@@ -6,7 +6,11 @@ import addRouteHandlers from './handlers/index.js';
 
 const app = fastify({ logger: true });
 
-await app.register(cors, {});
+await app.register(cors, {
+    origin: ['alinafront.netlify.app', 'http://localhost:5173'],
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
+  });
 
 await connect(); // Connexion à MongoDB
 
