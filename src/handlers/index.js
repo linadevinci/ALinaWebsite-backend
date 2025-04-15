@@ -18,8 +18,9 @@ export default async function addRouteHandlers(app) {
       return reply.status(401).send({ error: "Utilisateur introuvable." });
     }
 
-    const hashed = getHashFromClearText(password);
-    if (user.password !== hashed) {
+    // In /handlers/index.js, replace the password check with:
+    const passwordMatch = await user.comparePassword(password);
+    if (!passwordMatch) {
       return reply.status(401).send({ error: "Mot de passe incorrect." });
     }
 
