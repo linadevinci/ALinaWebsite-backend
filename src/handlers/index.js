@@ -56,4 +56,52 @@ export default async function addRouteHandlers(app) {
   app.get("/", async (request, reply) => {
     return reply.send({ message: "Welcome to the Quotes API! Use /api/quote to get a random quote." });
   });
+
+  app.post("/api/users", async (request, reply) => {
+    try {
+      const { username, email, password } = request.body;
+      
+      // Check if required fields exist
+      if (!username || !email || !password) {
+        return reply.status(400).send({ error: "Tous les champs sont requis." });
+      }
+      
+      // Check if user already exists
+      const existingUser = await userModel.findOne({ 
+        $or: [{ username }, { email }] 
+      });
+      
+      if (existingUser) {
+        return reply.status(400).send({ 
+          error: "Un utilisateur avec ce nom ou cet email existe déjà." 
+        });
+      }
+      
+      // Create new user
+      const hashedPassword = getHashFromClearText(password);
+      const newUser = new userModel({
+        username,
+        email,
+        password: hashedPassword
+      });
+      
+      await newUser.save();
+      
+      return reply.status(201).send({ 
+        message: "Compte créé avec succès !",
+        user: {
+          username: newUser.username,
+          email: newUser.email
+        }
+      });
+    } catch (err) {
+      console.error("❌ Erreur POST /api/users :", err);
+      return reply.status(500).send({ error: "Erreur lors de la création du compte." });
+    }
+  });
+
+  
+
+
+  
 }
